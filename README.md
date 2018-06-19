@@ -1,28 +1,103 @@
-== README
+### Rails CRUD
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* ORM(Object Relational Mapper)
 
-Things you may want to cover:
+  * rails에서는 [ActiveRecord](https://guides.rorlab.org/active_record_basics.html)를 활용한다.
 
-* Ruby version
+* Controller 생성
 
-* System dependencies
+  ```console
+  $ rails g controller posts index new create show edit update destroy
+  ```
 
-* Configuration
+* Model 생성
 
-* Database creation
+  ```console
+  $ rails generate model post
+  ```
 
-* Database initialization
+  * `app/model/post.rb` 
+  * `db/migrate/20180619_create_posts.rb`
 
-* How to run the test suite
+* `migration 파일` 변경
 
-* Services (job queues, cache servers, search engines, etc.)
+  ```ruby
+  # db/migrate/20180619_create_posts.rb
+  class CreatePosts < ActiveRecord::Migration
+    def change
+      create_table :posts do |t|
+        t.string :title
+        t.text :body
+  
+        t.timestamps null: false
+      end
+    end
+  end
+  ```
 
-* Deployment instructions
+  ```console
+  $ rake db:migrate
+  == 20180619044117 CreatePosts: migrating ======================================
+  -- create_table(:posts)
+     -> 0.0131s
+  == 20180619044117 CreatePosts: migrated (0.0132s) =============================
+  ```
 
-* ...
+  * `db/schema.rb` 에 반영이 되었는지 확인!!
 
+* CRUD
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+  * Create : `new`, `create`
+  * Read : `show`
+  * Update : `edit` , `update`
+  * Destroy : `destroy`
+
+* Create
+
+  ```
+  irb(main):001:0 > Post.create(title: "제목", body: "내용")
+  ```
+
+* Read
+
+  ```
+  irb(main):001:0 > Post.find(id)
+  ```
+
+  
+
+* Update
+
+  ```
+  irb(main):001:0 > post = Post.find(id)
+  irb(main):002:0 > post.update(title: "변경", body: "변경")
+  ```
+
+* Destroy
+
+  ```
+  irb(main):001:0 > Post.find(id).destroy
+  ```
+
+  
+
+### [Rails flash message](https://guides.rorlab.org/action_controller_overview.html#flash)
+
+```ruby
+def destroy
+   flash[:alert] = "삭제되었습니다." 
+end
+```
+
+```erb
+<%= flash[:alert] %>
+```
+
+### [Rails partial](https://guides.rorlab.org/layouts_and_rendering.html#%ED%8C%8C%EC%85%9C-partial-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)
+
+`app/views/layout/_flash.html.erb`
+
+```erb
+<%= render 'layout/flash' %>
+```
+
