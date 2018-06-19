@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   # get 'posts/index' => 'posts#index'
   get 'posts/new'
   get 'posts/create'
+  # restful 아키텍처
+  get 'posts/:id/edit' => 'posts#edit'
+  get 'posts/:id/update' => 'posts#update'
   get 'posts/:id' => 'posts#show'
   get 'posts/:id/destroy' => 'posts#destroy'
 
