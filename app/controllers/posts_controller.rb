@@ -8,9 +8,12 @@ class PostsController < ApplicationController
 
   def create
     # 1.
-    Post.create(title: params[:title],
+    post = Post.create(title: params[:title],
                 body: params[:body]
     )
+    # text 안에 변수를 넣을 때 (string interpolation)
+    # 반드시 "" 로 해줘야함.
+    redirect_to "/posts/#{post.id}"
     # 1-1.
     # Post.create(:title => params[:title], :body => params[:body])
     # 2.
@@ -23,4 +26,22 @@ class PostsController < ApplicationController
   def show
     @post = Post.find(params[:id])
   end
+
+  def destroy
+    post = Post.find(params[:id])
+    post.destroy
+    redirect_to '/'
+  end
+
+
+
+
+
+
+
+
+
+
+
+
 end
